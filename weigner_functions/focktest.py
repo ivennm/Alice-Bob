@@ -1,24 +1,25 @@
+import numpy as np
 import matplotlib.pyplot as plt
-import jax.numpy as jnp
-from dynamiqs import fock, wigner
+from qutip import *
 
-# Create Fock state |n⟩
-n = 3
-dim = n + 10  # Ensure dim > n
-psi = fock(dim, n)
+# Step 1: Define parameters
+N = 20             # Hilbert space size (should be > max n)
+xvec = np.linspace(-5, 5, 500)
 
-# Compute Wigner function
-wig = wigner(psi)
-
-# Plot manually using matplotlib
-x = jnp.linspace(-5, 5, wig.shape[0])
-y = jnp.linspace(-5, 5, wig.shape[1])
-X, Y = jnp.meshgrid(x, y)
-
-fig, ax = plt.subplots()
-c = ax.contourf(X, Y, wig, levels=100, cmap="RdBu_r")
-fig.colorbar(c)
-ax.set_title(f"Wigner Function of Fock State |{n}⟩")
-ax.set_xlabel("x (position)")
-ax.set_ylabel("p (momentum)")
-plt.show()
+# Step 2: Loop through Fock states |n⟩
+for n in range(4):  # You can change this to range(N) if you want more
+    fock_state = fock(N, n)
+    
+    # Step 3: Compute the Wigner function
+    W = wigner(fock_state, xvec, xvec)
+    
+    # Step 4: Plot
+    plt.figure(figsize=(6,5))
+    plt.contourf(xvec, xvec, W, 100, cmap="RdBu_r")
+    plt.xlabel("x")
+    plt.ylabel("p")
+    plt.title(f"Wigner function for Fock state |{n}⟩")
+    plt.colorbar()
+    plt.grid(True)
+    plt.tight_layout()
+    plt.show()
