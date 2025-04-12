@@ -55,4 +55,5 @@ except Exception as e:
     print(f"Error type: {type(e).__name__}")
     print("Stack trace:")
     import traceback
-    traceback.print_exc()
+    traceback.print_exc() 
+    
