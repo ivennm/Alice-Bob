@@ -7,7 +7,7 @@ N = 20             # Hilbert space size (should be > max n)
 xvec = np.linspace(-5, 5, 500)
 
 # Step 2: Loop through Fock states |n⟩
-for n in range(4):  # You can change this to range(N) if you want more
+for n in range(1):  # You can change this to range(N) if you want more
     fock_state = fock(N, n)
     
     # Step 3: Compute the Wigner function
