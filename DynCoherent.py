@@ -5,7 +5,7 @@ import dynamiqs as dq
 # -------------------------------
 # Step 1: Define parameters
 # -------------------------------
-N = 2                   # Number of Fock states (Hilbert space dimension)
+N = 1                   # Number of Fock states (Hilbert space dimension)
 alpha = 0 + 0j          # Coherent state displacement
 
 # -------------------------------
@@ -18,7 +18,15 @@ coh_state = dq.coherent(N, alpha)
 # Step 3 & 4: Plot the Wigner function
 # -------------------------------
 # Instead of passing custom grid arrays, we let Dynamiqs use its default grid.
+plt.style.use('dark_background')  # Dark background for the entire plot
+plt.rcParams['axes.facecolor'] = '#000080'
 fig, ax = plt.subplots(figsize=(6, 5))
+
+# Custom styling
+
+ax.tick_params(colors='white')             # White ticks
+ax.grid(True, color='white', linestyle='--', linewidth=0.5)  # White dashed grid lines
+
 dq.plot.wigner(coh_state, ax=ax)  # Provide the axis via keyword 'ax'
 ax.set_title(f"Wigner function for α = {alpha}")
 plt.show()
