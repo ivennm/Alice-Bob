@@ -1,23 +1,24 @@
 import numpy as np
+from scipy.linalg import sqrtm
 
-def fidelity_with_pure_state(rho, psi):
-    """
-    Compute fidelity F(ρ, |ψ⟩) = ⟨ψ|ρ|ψ⟩ for a pure reference state.
+def fidelity(rho, rho_ref):
+    # Compute the square root of the reference density matrix.
+    sqrt_rho_ref = sqrtm(rho_ref)
 
-    Parameters:
-    rho : np.ndarray
-        Density matrix (NxN)
-    psi : np.ndarray
-        Pure state vector (N,)
+    #Compute the intermediate product sqrt(rho_ref) * rho * sqrt(rho_ref)
+    intermediate = sqrt_rho_ref @ rho @ sqrt_rho_ref
+    
+    #Compute the square root of the intermediate product.
+    sqrt_intermediate = sqrtm(intermediate)
 
-    Returns:
-    float
-        Fidelity value (real scalar)
-    """
-    psi = psi.reshape(-1, 1)  # Ensure column vector
-    return np.real((psi.conj().T @ rho @ psi).item())
+    #Calculate the trace and ensure the result is real (to avoid small imaginary parts).
+    fidelity_value = np.trace(sqrt_intermediate)
+    fidelity_value = np.real(fidelity_value)
 
-# Your 10x10 density matrix
+    #Return fidelity squared.
+    return fidelity_value**2
+
+
 rho = np.array([[ 1.01352309e-01+0.00000000e+00j,  5.08008936e-03-3.52853023e-03j,
   -3.38309814e-03+2.59720512e-03j,  4.82042913e-03-7.55451275e-04j,
   -3.08814384e-05-1.29487387e-03j,  2.33438505e-03-2.17781965e-03j,
@@ -68,10 +69,13 @@ rho = np.array([[ 1.01352309e-01+0.00000000e+00j,  5.08008936e-03-3.52853023e-03
    2.19540466e-03+1.27191468e-03j,  4.03069030e-03-3.57479665e-04j,
    1.74466091e-03-2.12664355e-03j, -3.70981936e-03+1.01027534e-03j,
   -5.30541267e-03+5.45822848e-04j,  9.79494816e-02+0.00000000e+00j]], dtype=complex)
+    # Normalize rho so that trace(rho) = 1.
+rho = rho / np.trace(rho)
 
-# Reference state |0⟩ (vacuum)
-psi_ref = np.array([1, 0, 0, 0, 0, 0, 0, 0, 0, 0], dtype=complex)
+    #Example reference state: the vacuum state (|0><0|) embedded in a 4-dimensional space.
+rho_ref = np.zeros((10, 10), dtype=complex)
+rho_ref[0, 0] = 1.0  # Only the first element is nonzero.
 
-# Fidelity computation
-F = fidelity_with_pure_state(rho, psi_ref)
-print("Fidelity with |0⟩ state:", F)
+    #Compute the fidelity.
+F = fidelity(rho, rho_ref)
+print("Fidelity between rho and rho_ref:", F)

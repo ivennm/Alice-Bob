@@ -8,7 +8,7 @@ import cmath
 # ---------------------------
 # Load the pickle data
 # ---------------------------
-file_path = "data/wigner_fock_one.pickle"  # Update this if needed
+file_path = "data/wigner_fock_zero.pickle"  # Update this if needed
 with open(file_path, "rb") as f:
     data = pickle.load(f)
 
@@ -19,23 +19,23 @@ x = data[0]  # 1D array for Re(α)
 y = data[1]  # 1D array for Im(α)
 W = data[2]  # 2D array for Wigner function values
 a=np.zeros(len(x)*len(y),dtype=complex)
-for i in range(len(x)):
-    for k in range(len(y)):
-        a[i*len(y)+k]=x[i]+y[k]*1j
+for i in range(len(y)):
+    for k in range(len(x)):
+        a[i*len(y)+k]=x[k]+y[i]*1j
     
 w=np.zeros(len(x)*len(y))
-for i in range(len(x)):
-    for k in range(len(y)):
+for i in range(len(y)):
+    for k in range(len(x)):
         w[i*len(y)+k]=W[i][k]
 
 
 # Parameters
-n = 50  # Hilbert space dimension
+n = 10  # Hilbert space dimension
 
 # Phase-space sample points (complex numbers)
 alpha_list = a
 
-# Measured Wigner function values at those points (dummy data)
+# Measured Wigner function values at those points
 wigner_measured = w
 
 def operator_for_alpha(alpha, n):
@@ -75,7 +75,7 @@ loss = cp.sum(loss_terms)
 objective = cp.Minimize(loss)
 prob = cp.Problem(objective, constraints)
 
-result = prob.solve(solver=cp.SCS, verbose=True)
+result = prob.solve(solver=cp.MOSEK, verbose=True)
 # Check if the problem was solved successfully
 
 # Output
