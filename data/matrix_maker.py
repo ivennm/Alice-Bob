@@ -30,7 +30,7 @@ for i in range(len(x)):
 
 
 # Parameters
-n = 10  # Hilbert space dimension
+n = 50  # Hilbert space dimension
 
 # Phase-space sample points (complex numbers)
 alpha_list = a
