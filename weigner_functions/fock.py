@@ -1,33 +1,34 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from qutip import *
+import dynamiqs as dq
 
+# -------------------------------
 # Step 1: Define parameters
-N = 10      # Hilbert space dimension (must be > n)
-n = 1       # Fock state to visualize
-xvec = np.linspace(-5, 5, 500)
+# -------------------------------
+# Set the Hilbert space dimension to be larger than the Fock state number.
+dim = 10            # Total number of Fock states in the Hilbert space
+n_state = 1         # Fock state index (e.g. |1>)
 
-# Step 2: Create Fock state |n⟩
-fock_state = fock(N, n)
+# -------------------------------
+# Step 2: Create the Fock state
+# -------------------------------
+# dq.fock(dim, n_state) returns the ket of the Fock state |n_state⟩ as a QArray.
+fock_state = dq.fock(dim, n_state)
 
-# Step 3: Compute the Wigner function
-W = wigner(fock_state, xvec, xvec)
+# -------------------------------
+# Step 3: Plot the Wigner function for the Fock state
+# -------------------------------
+# We'll use the built-in grid provided by Dynamiqs for plotting.
+plt.style.use('dark_background')               # Set the dark background for the plot
+plt.rcParams['axes.facecolor'] = '#000080'       # Set the axis background color
 
-# Step 4: Plot with dark background
-plt.style.use('dark_background')
+# Create a figure and axis with custom styling
 fig, ax = plt.subplots(figsize=(6, 5))
-contour = ax.contourf(xvec, xvec, W, 100, cmap='Blues')
+ax.tick_params(colors='white')                 # White ticks for better visibility
+ax.grid(True, color='white', linestyle='--', linewidth=0.5)  # White dashed grid lines
 
-# Style customization
-ax.set_facecolor("#0c1a3a")  # deep blue background
-ax.set_title(f"Wigner Function for Fock State |{n}⟩", color='white')
-ax.set_xlabel("x", color='white')
-ax.set_ylabel("p", color='white')
-ax.tick_params(colors='white')
-plt.colorbar(contour)
+# Use Dynamiqs built-in function for plotting the Wigner function
+dq.plot.wigner(fock_state, ax=ax)              # Pass the axis via the 'ax' keyword
+ax.set_title(f"Wigner function for Fock state |{n_state}>")
 
-# Grid with white lines
-ax.grid(True, color='white', linestyle='--', linewidth=0.5)
-
-plt.tight_layout()
 plt.show()
