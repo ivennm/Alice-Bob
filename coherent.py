@@ -13,6 +13,7 @@ coherent_state = coherent(N, alpha)
 xvec = np.linspace(-5, 5, 500)
 W = wigner(coherent_state, xvec, xvec)
 
+
 # Step 4: Plot the Wigner function
 plt.figure(figsize=(6,5))
 plt.contourf(xvec, xvec, W, 100)
