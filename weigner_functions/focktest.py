@@ -1,25 +1,34 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from qutip import *
+import dynamiqs as dq
 
+# -------------------------------
 # Step 1: Define parameters
-N = 20             # Hilbert space size (should be > max n)
-xvec = np.linspace(-5, 5, 500)
+# -------------------------------
+# Set the Hilbert space dimension to be larger than the Fock state number.
+dim = 10            # Total number of Fock states in the Hilbert space
+n_state = 1         # Fock state index (e.g. |1>)
 
-# Step 2: Loop through Fock states |n⟩
-for n in range(1):  # You can change this to range(N) if you want more
-    fock_state = fock(N, n)
-    
-    # Step 3: Compute the Wigner function
-    W = wigner(fock_state, xvec, xvec)
-    
-    # Step 4: Plot
-    plt.figure(figsize=(6,5))
-    plt.contourf(xvec, xvec, W, 100, cmap="RdBu_r")
-    plt.xlabel("x")
-    plt.ylabel("p")
-    plt.title(f"Wigner function for Fock state |{n}⟩")
-    plt.colorbar()
-    plt.grid(True)
-    plt.tight_layout()
-    plt.show()
+# -------------------------------
+# Step 2: Create the Fock state
+# -------------------------------
+# dq.fock(dim, n_state) returns the ket of the Fock state |n_state⟩ as a QArray.
+fock_state = dq.fock(dim, n_state)
+
+# -------------------------------
+# Step 3: Plot the Wigner function for the Fock state
+# -------------------------------
+# We'll use the built-in grid provided by Dynamiqs for plotting.
+plt.style.use('dark_background')               # Set the dark background for the plot
+plt.rcParams['axes.facecolor'] = '#000080'       # Set the axis background color
+
+# Create a figure and axis with custom styling
+fig, ax = plt.subplots(figsize=(6, 5))
+ax.tick_params(colors='white')                 # White ticks for better visibility
+ax.grid(True, color='white', linestyle='--', linewidth=0.5)  # White dashed grid lines
+
+# Use Dynamiqs built-in function for plotting the Wigner function
+dq.plot.wigner(fock_state, ax=ax)              # Pass the axis via the 'ax' keyword
+ax.set_title(f"Wigner function for Fock state |{n_state}>")
+
+plt.show()
