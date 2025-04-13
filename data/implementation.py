@@ -55,4 +55,5 @@ rho_ref[0, 0] = 1.0
 
 # Compute fidelity
 F = fidelity(rho, rho_ref)
+
 print("Fidelity between rho and rho_ref:", F)
