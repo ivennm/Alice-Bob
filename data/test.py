@@ -29,9 +29,8 @@ for i in range(len(x)):
         w[i*len(y)+k]=W[i][k]
 
 
-
 # Parameters
-n = 20  # Hilbert space dimension
+n = 10  # Hilbert space dimension
 
 # Phase-space sample points (complex numbers)
 alpha_list = a
