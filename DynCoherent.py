@@ -52,8 +52,3 @@ pvec = np.linspace(-5, 5, 500)
 W = dq.plot.wigner(coh_state)  # using default grid
 W = np.array(W)  # convert to NumPy array for processing
 print(W)
-ix, iy = np.unravel_index(np.argmax(W), W.shape)
-# Note: adjust indexing if your grid ordering differs.
-x0, p0 = xvec[iy], pvec[ix]
-alpha_reconstructed = (x0 + 1j * p0) / np.sqrt(2)
-print(f"Reconstructed α: {alpha_reconstructed:.3f}")
